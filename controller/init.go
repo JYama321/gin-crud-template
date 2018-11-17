@@ -1,11 +1,12 @@
 package controller
 
-import repository2 "github.com/JYama321/gin-crud-template/repository"
+import (
+	"github.com/JYama321/gin-crud-template/repo"
+	"github.com/jinzhu/gorm"
+)
 
-var repository repository2.RepoInstance
-var repo *repository2.RepoInstance
+var rep *repo.RepoInstance
 
-func init() () {
-	repository = repository2.NewRepository()
-	repo = &repository
+func NewInstance(db *gorm.DB) () {
+	rep = repo.NewRepository(db)
 }
