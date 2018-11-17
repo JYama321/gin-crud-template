@@ -1,0 +1,4 @@
+# This should be written in .gitignore_global
+
+.idea
+vendor/
