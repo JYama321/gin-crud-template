@@ -6,17 +6,17 @@ import (
 )
 
 /*
- get user response code
-	0: successfully created
-	1: already exist
+ create user response code
+	0: user created successfully
+	1: user already exist
 	-1: error has occurred
 */
 type CreateUserResponseCode int8
 
 /*
 get user response code
-	0: successfully
-	-1: error has occurred
+	0: success
+	-1: error
 */
 
 type GetUserResponseCode int8
