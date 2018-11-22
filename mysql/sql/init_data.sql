@@ -1,4 +1,5 @@
 CREATE DATABASE if not exists gin_template;
+CREATE DATABASE if not exists gin_template_test;
 USE gin_template;
 
 

@@ -12,3 +12,4 @@ func connect() *gorm.DB {
 	}
 	return db
 }
+
