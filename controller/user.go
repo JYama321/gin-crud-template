@@ -13,6 +13,11 @@ type newUserRequest struct {
 	Password string `json:"password"`
 }
 
+type newUserResponse struct {
+	User entity.User `json:"user"`
+	Code repo.CreateUserResponseCode `json:"resultCode"`
+	Error error `json:"error"`
+}
 
 type getUserResponse struct {
 	Users []entity.User `json:"users"`
@@ -21,15 +26,13 @@ type getUserResponse struct {
 }
 
 
-type newUserResponse struct {
-	User entity.User `json:"user"`
-	Code repo.CreateUserResponseCode `json:"resultCode"`
-	Error error `json:"error"`
-}
-
-
+/*
+	/users request
+*/
 func GetUsers(c *gin.Context) {
 	var res getUserResponse
+
+	rep := repo.NewRepository()
 	users,code,err := rep.GetUsers()
 	res.Users = users
 	res.Code = code
@@ -42,8 +45,14 @@ func GetUsers(c *gin.Context) {
 }
 
 
+/*
+	/users/new request
+*/
+
 func NewUser(c *gin.Context) {
 	var json newUserRequest
+
+	rep := repo.NewRepository()
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}

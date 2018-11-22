@@ -10,34 +10,26 @@ import (
 )
 
 func gormConnect() *gorm.DB {
+	fmt.Println("start connecting...")
 	db, err := database.Connect()
 	db.AutoMigrate(&entity.User{})
-
-
 	if err != nil {
-		fmt.Println("database connection error %s", err)
+		fmt.Printf("database connection error %s", err.Error())
 		panic("database connection failed.")
 	}
+	fmt.Printf("error %s",err)
 	return db
 }
 
 func main() {
 	router := gin.Default()
-	fmt.Println("start connecting...")
-	db, err := database.Connect()
-	fmt.Printf("error %s",err)
-	db.AutoMigrate(&entity.User{})
 
-
-	if err != nil {
-		fmt.Println("database connection error %s", err)
-		panic("database connection failed.")
-	}
-	defer db.Close()
-
-	controller.NewInstance(db)
 	router.GET("/users", controller.GetUsers)
 	router.POST("/users/new", controller.NewUser)
+
+	db := gormConnect()
+	defer db.Close()
+
 
 	router.Run(":3000")
 }

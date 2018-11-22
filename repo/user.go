@@ -3,6 +3,9 @@ package repo
 import (
 	"fmt"
 	"github.com/JYama321/gin-crud-template/entity"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
 /*
@@ -22,15 +25,25 @@ get user response code
 type GetUserResponseCode int8
 
 
+type UserRepository struct {
+	db *gorm.DB
+}
 
-func (r *RepoInstance) getByID(id int) entity.User {
+func NewRepository() *UserRepository{
+	db := connect()
+	return &UserRepository{db}
+}
+
+
+func (r *UserRepository) GetByID(id int) entity.User {
 	var user entity.User
 	r.db.First(&user, id)
 	return user
 }
 
 
-func (r *RepoInstance) GetUsers() ([]entity.User, GetUserResponseCode ,error) {
+// GetUsers
+func (r *UserRepository) GetUsers() ([]entity.User, GetUserResponseCode ,error) {
 	var user []entity.User
 	if err := r.db.Limit(10).Find(&user).Error; err != nil {
 		fmt.Println(err)
@@ -40,11 +53,14 @@ func (r *RepoInstance) GetUsers() ([]entity.User, GetUserResponseCode ,error) {
 	}
 }
 
-func (r *RepoInstance) CreateUser(
+
+// Create User
+func (r *UserRepository) CreateUser(
 	userName string,
 	email string,
-	passwordDigest string,
+	password string,
 ) (entity.User, CreateUserResponseCode,error) {
+	passwordDigest := generatePasswordDigest(password)
 	var user = entity.User{
 		UserName: userName,
 		Email: email,
@@ -59,4 +75,13 @@ func (r *RepoInstance) CreateUser(
 		// すでにユーザが存在
 		return user, 1, nil
 	}
+}
+
+
+func generatePasswordDigest(password string) string {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return ""
+	}
+	return string(hash)
 }
