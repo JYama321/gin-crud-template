@@ -8,13 +8,9 @@ import (
 	"testing"
 )
 
-func connectTestDatabase() (db *gorm.DB, err error) {
-	db,err = gorm.Open("mysql", "root:db_root_password@tcp(db:3306)/gin_template_test?charset=utf8&parseTime=True&loc=Local")
-	return
-}
 
 func connectTest() *gorm.DB {
-	db, err := connectTestDatabase()
+	db,err := gorm.Open("mysql", "root:db_root_password@tcp(db:3306)/gin_template_test?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err)
 	}
@@ -25,7 +21,6 @@ func newTestRepository() *UserRepository{
 	db := connectTest()
 	return &UserRepository{db}
 }
-
 
 
 func setup() {

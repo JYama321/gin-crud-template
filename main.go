@@ -17,7 +17,6 @@ func gormConnect() *gorm.DB {
 		fmt.Printf("database connection error %s", err.Error())
 		panic("database connection failed.")
 	}
-	fmt.Printf("error %s",err)
 	return db
 }
 
