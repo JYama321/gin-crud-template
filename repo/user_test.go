@@ -10,14 +10,14 @@ import (
 
 
 func connectTest() *gorm.DB {
-	db,err := gorm.Open("mysql", "root:db_root_password@tcp(db:3306)/gin_template_test?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "root:db_root_password@tcp(db:3306)/gin_template_test?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err)
 	}
 	return db
 }
 
-func newTestRepository() *UserRepository{
+func newTestRepository() *UserRepository {
 	db := connectTest()
 	return &UserRepository{db}
 }
